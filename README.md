@@ -1,6 +1,13 @@
-# Light-a-Match_ID-20
+# Dating app 
 
-[![Build Status](https://travis-ci.com/simoneca95/Light-a-Match_ID-20.svg?token=NrcwxDjPEKpozH1DiYs6&branch=main)](https://travis-ci.com/simoneca95/Light-a-Match_ID-20)
+Project name: Light-a-Match
+
+Final mark: **29/30**
+
+Note: the original repository was wrongly deleted by a collaborator. This repo has been created from a local copy
+Note: the majority of this project is written in Italian languge
+
+The project was carried out by a team of 5 people, following a **SCRUM** approach
 
 ## Product Backlog 
 
