@@ -2,12 +2,15 @@
 
 Project name: Light-a-Match
 
+The project was carried out by a team of 5 people, following a **SCRUM** approach.
+
 Final mark: **29/30**
 
-Note: the original repository was wrongly deleted by a collaborator. This repo has been created from a local copy
-Note: the majority of this project is written in Italian languge
+**Note**: the original repository was wrongly deleted by a collaborator. This repo has been created from a local copy. Unfortunately the entire commits history has been lost.
 
-The project was carried out by a team of 5 people, following a **SCRUM** approach
+**Note**: the majority of this project is written in Italian languge.
+
+
 
 ## Product Backlog 
 
