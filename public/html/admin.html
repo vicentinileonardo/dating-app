@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Light-a-Match</title>
+		<link rel="icon" href="../images/icon.png"/>
+        <link href="../css/style_Administration.css" rel="stylesheet" type="text/css">
+        <link href="../css/style_loggedUser.css" rel="stylesheet" type="text/css">
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+		
+		
+		<script src="../scripts/scriptAdmin.js"></script>
+		<script>
+            function collapse() {
+                var x = document.getElementById("myNavbar");
+                if (x.className === "mynavbar") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "mynavbar";
+                }
+            }
+        </script>
+
+    </head>
+	<body class="bg-gra-03" onload="loadInterests()">
+		<div class="mynavbar" id="myNavbar">
+            <div>
+                <a href="homepage"> HomePage </a>
+				<a href="contacts">Contattaci</a>
+				<a href="login"> Esci </a>
+                <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="collapse()">&#9776;</a>
+            </div>
+        </div>
+		<div class="container" style="background-color: white; margin-top: 100px; padding: 20px; width: 90%;" >
+			<!--<ul class="nav nav-pills nav-tabs-costum nav-justified" class="customBackground">
+			  <li class="active list-item" ><a data-toggle="tab" href="#profile_information" class="myLink">Profilo</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#chat" class="myLink">Chat</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#match" class="myLink" onclick="fetchToMatches()">Match</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#calendar" class="myLink">Calendario</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#finduser" class="myLink">Trova utenti</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#settings" class="myLink">Impostazioni</a></li>
+			</ul> -->
+			<br/>
+			<div class="tab-content">
+				<div id="settingsInterest" class="tab-pane fade in active">
+                    <div class="row" style="width: 100%; font-family: Arial !important; font-size: 16px !important; padding-left: 30px !important;">
+                        <div class="col-md-4" id="sentMatch" >
+                            <center> <h4> Inserisci Interesse </h4> </center>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label for="nameInterest">Nome Interesse:</label>
+                                    <input type="text" class="form-control" placeholder="Nome Interesse" id="nameInterest" name="nameInterest">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionInterest">Descrizione Interesse:</label>
+                                    <input type="text" class="form-control" placeholder="Descrizione Interesse" id="descriptionInterest" name="descriptionInterest">
+                                </div>
+                                <button type="button" class="btn btn-dark" onclick="insertNewInterest()" style="width:100%;">Conferma Inserimento</button>
+                            </form>
+                            <br/>
+                            <div class="onError" role="alert" id="showErrorInsert" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="col-md-4" id="receivedMatch" >
+                            <center> <h4> Elimina Interesse </h4> </center>
+                            <div class="bootstrap-select-wrapper" style="width: 50% !important;">
+                                <label style="font-size: 15px !important;">Interesse da eliminare:</label>
+                                <select title="Scegli un valore" class="form-control" id="interestToDelete" name="interestToDelete">
+                                    <option value="not_selected" id="not_selected_interest" selected> - </option>
+                                </select>
+                            </div>
+                            <br/>
+                            <button type="button" class="btn btn-dark" onclick="deleteInterest()" style="width:100%;">Conferma Cancellazione</button>
+                            <br/> <br/>
+                            <div class="onError" role="alert" id="showErrorDelete" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="col-md-4 myColumn" id="confirmedMatch">
+                                <center> <h4> Modifica Interesse </h4> </center>
+                                <div class="bootstrap-select-wrapper" style="width: 50% !important;">
+                                    <label style="font-size: 15px !important;">Interesse da modificare:</label>
+                                    <select title="Scegli un valore" class="form-control" id="interestToModify" name="interestToModify">
+                                        <option value="not_selected" id="not_selected_interest" selected> - </option>
+                                    </select>
+                                </div>
+                                <br/>
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label for="updateNameInterest">Nuovo Nome Interesse:</label>
+                                        <input type="text" class="form-control" placeholder="Nome Interesse" id="updateNameInterest" name="updateNameInterest">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="updateDescriptionInterest">Nuova Descrizione Interesse:</label>
+                                        <input type="text" class="form-control" placeholder="Descrizione Interesse" id="updateDescriptionInterest" name="updateDescriptionInterest">
+                                    </div>
+                                    <button type="button" class="btn btn-dark" onclick="modifyInterest()" style="width:100%;">Conferma Modifica</button>
+                                    <br/> <br/>
+                                    <div class="onError" role="alert" id="showErrorModify" style="display: none;">
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+		<br/> <br/> <br/> <br/>
+		<div id="footer" class="footer">
+			<p id="text_footer" class="text_footer"> &copy; A.A. 2020-2021 Progetto Ingegneria del Software II - Group#20 </p>
+        </div>
+    </body>
+</html>

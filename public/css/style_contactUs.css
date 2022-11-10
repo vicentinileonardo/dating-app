@@ -1,0 +1,43 @@
+.title_info{
+	font-family: Trebuchet MS;
+	font-size: 50px;
+	font-style: italic;
+	margin-top: 0;
+	margin-bottom: 0;
+	text-decoration: underline;
+	color: #FFF;
+}
+
+.info{
+	width: 550px;
+	margin: 50px auto;
+	background: rgba(34, 34, 34, 0.9);
+	padding: 25px;
+	overflow: hidden;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+}
+
+.text_info{
+	font-family: Trebuchet MS;
+	font-size: 20px;
+	color: #FFF;
+}
+
+.email_list{
+	font-size: 20px;
+	font-family: Trebuchet MS;
+	color: #FFF;
+	padding-top: 8px;
+}
+
+.myParagraph{
+	color: black !important;
+	font-size: 20px;
+}
+
+.myUnorderedList{
+	color: black !important;
+	font-size: 20px;
+}

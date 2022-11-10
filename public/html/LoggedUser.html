@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Light-a-Match</title>
+		<link rel="icon" href="../images/icon.png"/>
+		<link href="../css/style_loggedUser.css" rel="stylesheet" type="text/css">
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+		
+		
+		<script src="../scripts/scriptProfilo.js"></script>
+		<script>
+            function collapse() {
+                var x = document.getElementById("myNavbar");
+                if (x.className === "mynavbar") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "mynavbar";
+                }
+            }
+        </script>
+
+    </head>
+	<body class="bg-gra-03">
+		<div class="mynavbar" id="myNavbar">
+            <div>
+                <a href="homepage"> HomePage </a>
+				<a href="contacts">Contattaci</a>
+				<a href="login"> Esci </a>
+                <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="collapse()">&#9776;</a>
+            </div>
+        </div>
+		<div class="container" style="background-color: white; margin-top: 100px; padding: 20px; width: 90%;">
+			<ul class="nav nav-pills nav-tabs-costum nav-justified" class="customBackground">
+			  <li class="active list-item" ><a data-toggle="tab" href="#profile_information" class="myLink">Profilo</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#chat" class="myLink">Chat</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#match" class="myLink" onclick="fetchToMatches()">Match</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#calendar" class="myLink">Calendario</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#finduser" class="myLink">Trova utenti</a></li>
+			  <li class="list-item"><a data-toggle="tab" href="#settings" class="myLink">Impostazioni</a></li>
+			</ul>
+			<br/>
+			<div class="tab-content">
+				<div id="profile_information" class="tab-pane fade in active">
+					<center> <h3>Ecco il tuo profilo </h3> </center>
+					<div class="container emp-profile">
+						<form>
+							<div class="row" style="width:auto;">
+								<div class="col-md-4">
+									<div class="profile-img">
+										<img src="../images/icon_avatar.png" alt="immagine del profilo" id="imageProfile"/>
+										<div class="file btn btn-lg btn-primary">
+											Cambia foto <input type="file" name="file"/>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="profile-head">
+										<h4 id="profile_name"> <b> Nome: </b> </h4>
+										<h4 id="profile_surname"> <b> Cogome: </b> </h4>
+										<br/>
+										<ul class="nav nav-tabs">
+											<li class="active" class="listSecondTab"><a data-toggle="tab" href="#aboutme" class="linkSecondTab">About Me</a></li>
+											<li><a data-toggle="tab" href="#change_profile" class="listSecondTab" class="linkSecondTab">Modifica profilo</a></li>
+											<li><a data-toggle="tab" href="#add_interests" class="listSecondTab" class="linkSecondTab">Aggiungi Interessi</a></li>
+										</ul>
+
+										<div class="tab-content">
+											<div id="aboutme" class="tab-pane fade in active">
+											  	<h3>Le mie informazioni:</h3>
+											  	<div class="row">
+													<div class="col-md-6">
+														<label>Nickname</label>
+													</div>
+													<div class="col-md-6">
+														<p id="profile_nickname"> </p>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Data di nascita</label>
+													</div>
+													<div class="col-md-6">
+														<p id="profile_birthday"> </p>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Sesso</label>
+													</div>
+													<div class="col-md-6">
+														<p id="profile_sex"> </p>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Orientamento Sessuale</label>
+													</div>
+													<div class="col-md-6">
+														<p id="profile_orientation"> </p>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Bio</label>
+													</div>
+													<div class="col-md-6">
+														<p id="profile_bio"> </p>
+													</div>
+												</div>
+											</div>
+											<div id="change_profile" class="tab-pane fade">
+												<h3>Qui potrai modificare le tue informazioni</h3>
+												<div class="row">
+													<div class="col-sm-8">
+														<form role="form">
+															<div class="form-group">
+																<label for="updatePassword">Nuova Password</label>
+																<input type="password" class="form-control" placeholder="Password" id="updatePassword" name="updatePassword">
+															</div>
+															<div class="form-group">
+																<label for="updateCheckPass">Conferma Nuova Password</label>
+																<input type="password" class="form-control" placeholder="Conferma Password" id="updateCheckPass" name="updateCheckPass">
+															</div>
+															<div class="form-group">
+																<label for="updateNickname">Nickname</label>
+																<input type="text" class="form-control" placeholder="Nickname" id="updateNickname" name="updateNickname">
+															</div>
+															<div class="bootstrap-select-wrapper">
+																<label>Sesso</label>
+																<select title="Scegli una opzione" class="form-control" id="updateSex" name="updateSex">
+																	<option value="male"> Maschio </option>
+																	<option value="female"> Femmina </option>
+																	<option value="other">Altro</option>
+																</select>
+															</div>
+															<br/>
+															<div class="bootstrap-select-wrapper">
+																<label>Orientamento sessuale</label>
+																<select title="Scegli una opzione" class="form-control" id="updateOrientation" name="updateOrientation">
+																	<option value="straight"> Etero </option>
+																	<option value="gay"> Gay </option>
+																</select>
+															</div>
+															<br/>
+															<div class="form-group float-label-control">
+																<label for="updateBio">Nuova Bio</label>
+																<textarea class="form-control" placeholder="Nuova Bio" rows="2" id="updateBio" name="updateBio"></textarea>
+															</div>
+															
+															<div>
+																<label for="relation">Cerchi una relazione?</label>
+																<br/>
+																<label class="switch">
+																	<input type="checkbox" id="relation"> 
+																	<span class="slider round"></span>
+																</label>
+															</div>
+
+															<button type="button" class="btn btn-dark" onclick="updateUser()" style="width:100%;">Conferma Modifiche</button>
+														</form>
+														<br/>
+														<div class="alert alert-danger" role="alert" id="error_message" style="display: none;">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="add_interests" class="tab-pane fade">
+												<h3>Qui potrai aggiungere i tuoi interessi</h3>
+												<div class="row row align-items-center" >
+													<div class="col-2" id="divInterests1" style="width: 70% !important">
+													</div>
+													<div class="col-2" id="divInterests2" style="width: 80% !important">
+										
+													</div>
+													<div class="col-sm-8"> <!-- questa serve per mettere a capo il bottone -->
+														<br/>
+														<button type="button" class="btn btn-dark" onclick="modifyInterests()" style="width: 100%;">Conferma Modifiche</button>
+														<br/> <br/>
+														<div class="alert alert-success" role="alert" id="confirm_message" style="display: none;">
+														</div>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>           
+					</div>
+				</div>
+				<div id="chat" class="tab-pane fade">
+					<center> <h3 id="title_chat"> Chat </h3> </center>
+					<div class="row" style="width: 100%; font-family: Arial !important; font-size: 16px !important; padding-left: 30px !important;">
+						<div class="col-md-9 myColumnChat" id="" style="height:1000px !important; height: 60vh !important;">
+							<div class="messages" id="showMessages">
+								
+							</div>
+							<div class="sendMessage" style="display: none;" id="send_message">
+								<label for="messageToSend">Messaggio:</label>
+								<input type="text" id="messageToSend" name="messageToSend" class="inputMessage" placeholder="Nuovo messaggio..."/>
+								<button class="btn btn-dark" name = "ButtonSend" style="width: 100%;" onclick="sendMessage(this)"> Invia </button>
+								<br/> <br/>
+								<!--<div class="row">
+									<div class="col-md-6">
+										<button class="btn btn-dark" name = "ButtonDeleteForMe" style="width: 100%;" onclick="deleteForMe(this)"> Cancella chat per me </button>
+									</div>
+									<div class="col-md-6">
+										<button class="btn btn-dark" name = "ButtonDeleteForAll" style="width: 100%;" onclick="deleteForAll(this)"> Cancella chat per entrambi </button>
+									</div>
+								</div>-->
+							</div>
+						</div>
+						<div class="col-md-3 userMatched" id="userMatched" style="height:1000px !important; height: 60vh !important;">
+						</div>
+					</div>
+				</div>
+				<div id="match" class="tab-pane fade">
+					<center> <h3> I tuoi match </h3> </center>
+					<div class="row" style="width: 100%; font-family: Arial !important; font-size: 16px !important; padding-left: 30px !important;">
+						<div class="col-md-3 myColumn" id="sentMatch" style="height:1000px !important; height: 60vh !important;">
+							<center> <h4> Inviati </h4> </center>
+							<br/> <br/>
+						</div>
+						<div class="col-md-3 myColumn" id="receivedMatch" style="height:1000px !important; height: 60vh !important;">
+							<center> <h4> Ricevuti </h4> </center>
+							<br/> <br/>
+						</div>
+						<div class="col-md-3 myColumn" id="confirmedMatch" style="height:1000px !important; height: 60vh !important;">
+							<center> <h4> Confermati </h4> </center>
+							<br/> <br/>
+						</div>
+						<div class="col-md-3 myColumn" id="refusedMatch" style="height:1000px !important; height: 60vh !important;">
+							<center> <h4> Rifiutati </h4> </center>
+							<br/> <br/>
+						</div>
+
+					</div>
+				</div>
+				<div id="calendar" class="tab-pane fade">
+					<center> <h3> I tuoi impegni </h3> </center>
+				</div>
+				<div id="finduser" class="tab-pane fade">
+					<center> <h3> Trova utenti </h3> </center>
+					<div class="row" style="width: 100%; font-family: Arial !important; font-size: 16px !important; padding-left: 30px !important;">
+						Seleziona le caratteristiche che vuoi ritrovare nell'altra persona: <br/>
+						(Se non selezioni nulla ti verrà fornita l'intera lista degli utenti)
+						<br/> <br/>
+						<div class="col-md-5">
+							<div class="bootstrap-select-wrapper" style="width: 100% !important;">
+								<label style="font-size: 15px !important;">Interessi:</label>
+								<div class="col" id="divInterests1FU">			
+								</div>
+								<div class="col" id="divInterests2FU">
+								</div>
+							</div>
+							
+							<div class="bootstrap-select-wrapper" style="width: 50% !important;">
+								<label style="font-size: 15px !important;">Sesso:</label>
+								<select title="Scegli un valore" class="form-control" id="sexToMatch" name="sexToMatch">
+									<option value="not_selected" id="not_selected_sex" selected> - </option>
+									<option value="male"> Maschio </option>
+									<option value="female"> Femmina </option>
+									<option value="other">Altro</option>
+								</select>
+							</div>
+							
+							<div class="bootstrap-select-wrapper" style="width: 50% !important;">
+								<label style="font-size: 15px !important;">Orientamento sessuale:</label>
+								<select title="Scegli un valore" class="form-control" id="orientationToMatch" name="orientationToMatch">
+									<option value="not_selected" id="not_selected_orientation" selected> - </option>
+									<option value="straight"> Etero </option>
+									<option value="gay"> Gay </option>
+								</select>
+							</div>
+							<div class="bootstrap-select-wrapper" style="width: 50% !important;">
+								<label style="font-size: 15px !important;">Et&aacute; minima:</label>
+								<select title="Scegli un valore" class="form-control" id="minAge" name="minAge">
+								</select>
+							</div>
+							<div class="bootstrap-select-wrapper" style="width: 50% !important;">
+								<label style="font-size: 15px !important;">Et&aacute; massima:</label>
+								<select title="Scegli un valore" class="form-control" id="maxAge" name="maxAge">
+								</select>
+							</div>
+							
+							<div>
+								<label for="relationSearch" style="font-size: 15px !important;">Cerchi una relazione?</label>
+								<br/>
+								<label class="switch" name="relationSearch">
+									<input type="checkbox" id="relationSearch">
+									<span class="slider round"></span>
+								</label>
+							</div>
+							
+							<br/> <br/>
+							<button type="button" class="btn btn-dark" onclick="getUsers()" style="width: 50%;">Conferma Caratteristiche</button>
+							<br/> <br/>
+							<div class="alert alert-danger" role="alert" id="error_message_find" style="display: none; width: 50%;">
+							</div>
+						</div>
+						<div class="col-md-7">
+							<div class="external_content" id="external_content">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="settings" class="tab-pane fade">
+					<center> <h3> Impostazioni </h3> </center>
+				</div>
+			</div>
+		</div>
+		<br/> <br/> <br/> <br/>
+		<div id="footer" class="footer">
+			<p id="text_footer" class="text_footer"> &copy; A.A. 2020-2021 Progetto Ingegneria del Software II - Group#20 </p>
+        </div>
+<script>
+	document.getElementById("updateCheckPass").disabled = true;
+
+	document.getElementById("updatePassword").addEventListener("input", modifyDisable);
+	document.getElementById("updateCheckPass").addEventListener("input", checkPassword);
+	
+	function modifyDisable(){
+		document.getElementById("updateCheckPass").disabled = false;
+		let testo = document.getElementById("updatePassword").value;
+		//console.log(testo);
+		
+		if(testo == 0){
+			document.getElementById("updateCheckPass").disabled = true;
+			document.getElementById("updateCheckPass").value = "";
+		}else if(testo > 0){
+			document.getElementById("updateCheckPass").disabled = false;
+		}
+		
+	}
+
+	function checkPassword(){
+		var password = document.getElementById("updatePassword").value;
+		var check_password = document.getElementById("updateCheckPass").value;
+		
+		if(password != check_password){
+			document.getElementById("updateCheckPass").style = "border: 2px solid red;";
+		}else{
+			document.getElementById("updateCheckPass").style = "border: 2px solid lawngreen;";
+		}
+	}
+</script>
+	
+	<input type='hidden' value='' id='idCurrentChat'>
+    </body>
+</html>

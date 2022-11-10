@@ -1,0 +1,1027 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: "Light-a-Match OpenAPI 3.0"
+  description: API per la gestione dell'applicazione "Light-a-Match"
+servers:
+  - url: http://light-a-match.herokuapp.com/api
+tags:
+- name: users
+  description: "Insieme di API per manipolare i dati di un utente"
+- name: interests
+  description: "Insieme di API per manipolare i dati di un interesse"
+paths:
+  /users:
+    post:
+      tags:
+      - "users"
+      description: >-
+        Crea un nuovo utente nell'applicazione.
+      summary: Registra utente.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: "Utente creato. Il collegamento si trova nell'header in Location"
+          headers:
+            'Location':
+              schema:
+                type: string
+              description: "Collegamento all'utente appena creato"
+        '400':
+          description: "<ul><li>Il campo {u_name} non può essere vuoto.</li><li>Il campo {u_name} non può contenere numeri o simboli speciali.</li><li>Il campo {surname} non può essere vuoto.</li><li>Il campo {surname} non può contenere numeri o simboli speciali.</li><li>Il campo {email} non può essere vuoto.</li><li>Il campo {email} deve contenere un indirizzo e-mail valido.</li><li>Il campo {password} non deve essere vuoto e deve essere uguale al campo {check_password}.</li><li>Il campo {birthday} non può essere vuoto.</li><li>Il campo {birthday} indica un utente non maggiorenne.</li><li>L'età non deve essere superiore a 99 anni.</li><li>Il campo {sex} non può essere vuoto.</li><li>Il campo {sex} può contenere solamente i seguenti valori: male, female, other.</li><li>Il campo {sex_orientation} non può essere vuoto.</li><li>Il campo {sex_orientation} può contenere solamente i seguenti valori: straight, gay.</li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        '409':
+          description: "L'e-mail inserita è già utilizzata da un altro utente."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+    get:
+      tags:
+      - "users"
+      description: >-
+        Mostra tutti gli utenti registrati e i relativi attributi.
+      summary: Mostra utenti.
+      parameters:
+      - name: "email"
+        in: "query"
+        description: "email dell'utente per il login"
+        required: false
+        schema:
+          type: "integer"
+      - name: "password"
+        in: "query"
+        description: "password dell'utente per il login"
+        required: false
+        schema:
+          type: "integer"
+      responses:
+        '200':
+          description: "Utenti mostrati correttamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllUsers'
+        "400":
+          description: '<ul><li>Il campo email non può essere vuoto.</li><li>Il campo password non può essere vuoto.</li></ul>'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "401":
+          description: 'La password inserita non è corretta'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "Utente non trovato."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+  /users/search:
+    get:
+      tags:
+      - "users"
+      summary: "Trova e mostra gli utenti con determinati parametri"
+      description: "Ritorna una lista di utenti che possiedono delle caratteristiche conformi ai parametri inseriti."
+      parameters:
+        - in: query
+          name: sexw
+          schema:
+            type: string
+          description: "Indica il sesso degli utenti da trovare"
+        - in: query
+          name: sexo
+          schema:
+            type: string
+          description: "Indica l'orientamento sessuale degli utenti da trovare"
+        - in: query
+          name: etamin
+          schema:
+            type: integer
+          description: "Indica l'età minima degli utenti da trovare"  
+        - in: query
+          name: etamax
+          schema:
+            type: integer
+          description: "Indica l'età massima degli utenti da trovare"
+        - in: query
+          name: relation
+          schema:
+            type: integer
+          description: "Indica se si vuole trovare utenti che cercano una relazione oppure no"
+        - in: query
+          name: intw
+          schema:
+            type: integer
+          description: "Indica gli interessi che devono possedere gli utenti da trovare (La stringa deve essere nel formato '1,2,3')"  
+      responses:
+        "200":
+          description: "Sono stati trovati utenti con i parametri inseriti e vengono mostrati"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: '<ul><li>Il campo {Sesso} può contenere solamente i seguenti valori: male, female, other.</li><li>Il campo {Orientamento sessuale} può contenere solamente i seguenti valori: straight, gay, not_selected.</li><li>Il campo {età minima} deve contenere un valore numerico intero o not_selected.</li><li>Il campo {età massima} deve contenere un valore numerico intero o not_selected.</li><li>Il campo {età minima} deve essere minore del campo {età massima}.</li><li>Il campo {età minima} deve essere compreso tra 18 e 99 (estremi inclusi).</li><li>Il campo {età massima} deve essere compreso tra 18 e 99 (estremi inclusi).</li><li>Il campo {relation} non può essere vuoto e può contenere solamente i seguenti valori: true, false.</li></ul>'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: 'Nessun utente con le caratteristiche richieste.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+  /users/{id}:
+    get:
+      tags:
+      - "users"
+      summary: "Trova e mostra utente tramite id"
+      description: "Ritorna i dati relativi all'utente con l'id fornito"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id dell'utente da mostrare"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "Utente trovato e mostrato"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: 'ID inserito non valido: <ul><li>id deve essere un intero</li><li>id deve essere maggiore di 0</li></ul>'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "Utente non trovato"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+    put:
+      tags:
+      - "users"
+      description: >-
+        Aggiorna le informazioni relative ad un utente.
+      summary: Aggiorna utente.
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID dell'utente da aggiornare."
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Parametri da aggiornare + eventuali flag
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqBodyPut'
+        required: false
+      responses:
+        "200":
+          description: "Utente aggiornato correttamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPut'
+        "400":
+          description: "<ul><li>Il campo {u_name} non può contenere numeri o simboli speciali.</li><li>Il campo {surname} non può contenere numeri o simboli speciali.</li><li>Data di nascita non valida.</li><li>L'età non deve essere minore di 18 anni.</li><li>L'eta' non deve essere superiore a 99 anni.</li><li>Il campo {sex} può contenere solamente i seguenti valori: male, female, other.</li><li>Il campo {sex_orientation} può contenere solamente i seguenti valori: straight, gay.</li><li>Il campo {relation} non può essere vuoto e può contenere solamente i seguenti valori: true, false.</li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "ID non trovato."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "500":
+          description: "Errore nel server."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+    delete:
+      tags:
+      - "users"
+      description: Elimina un particolare utente identificato da un id
+      summary: Elimina un utente
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID dell'utente da aggiornare."
+        required: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: "L'utente viene eliminato"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationOk'
+        "404":
+          description: "ID non trovato."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "500":
+          description: "Errore nel server."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+  /interests:
+    post:
+      tags:
+      - "interests"
+      description: >-
+         Inserisce nell'applicazione un nuovo interesse.
+      summary: Registra interesse.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterestPost'
+      responses:
+        '201':
+          description: "Interesse creato. Il collegamento si trova nell'header in Location"
+          headers:
+            'Location':
+              schema:
+                type: string
+              description: "Collegamento all'interesse appena creato"
+        '400':
+          description: '<ul><li>Il campo "name" non può essere vuoto.</li><li>Il campo "name" non può contenere numeri o simboli speciali.</li><li>Il campo "description" non può essere vuoto.</li>'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        '409':
+          description: "L'interesse che sta provando ad inserire è già persente nel database."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        '500':
+          description: "Errore del server."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+    get:
+      tags:
+      - "interests"
+      description: 
+        Mostra tutti gli interessi registrati e i relativi attributi.
+      summary: Mostra interessi.
+      responses:
+        '200':
+          description: "Interessi mostrati correttamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllInterests'
+  /interests/{id}:
+    get:
+      tags:
+      - "interests"
+      summary: "Trova e mostra le informazioni relative ad un interesse."
+      description: "Ritorna i dati relativi all'interesse con l'id fornito."
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id dell'interesse da mostrare"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "L'interesse è stato trovato e vengono mostrate le relative informazioni."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interest'
+        "400":
+          description: "<ul><li>L'id deve essere un valore numerico.</li><li>L'id deve essere un intero maggiore di 0.</li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "L'interesse con l'id fornito non è stato trovato."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+    put:
+      tags:
+      - "interests"
+      summary: "Modifica i campi di un particolare interesse"
+      description: "Modifica i dati di un interesse"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id dell'interesse che si vuole modificare"
+        required: true
+        schema:
+          type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterestToSend'
+      responses:
+        "200":
+          description: "L'interesse è stato aggiornato con successo"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interest'
+        "400":
+          description: "<ul><li>L'id deve essere un valore numerico.</li><li>L'id deve essere un intero maggiore di 0.</li><li>Il nome dell'interesse deve contenere solo delle lettere</li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "L'interesse con l'id fornito non è stato trovato."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+    delete:
+      tags:
+      - "interests"
+      summary: "Elimina interesse"
+      description: "Elimina l'interesse con un dato id."
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id dell'interesse da eliminare"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "204":
+          description: "L'interesse con quel determinato id è stato cancellato correttamente."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationOk'
+        "404":
+          description: "L'interesse con quel determinato id non è stato trovato."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "500":
+          description: "Errore del server."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+          
+  /interests/{iid}/users:
+    get:
+      tags:
+      - "interests"
+      summary: "Trova e mostra tutti gli utenti che possiedono un determinato interesse."
+      description: "Ritorna la lista degli id degli utenti che possiedono l'interesse con l'iid dato."
+      parameters:
+      - name: "iid"
+        in: "path"
+        description: "id dell'interesse in cui cercare la lista."
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "L'interesse è stato trovato e viene mostrata la lista degli utenti che lo possiedono."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllUsersWithInterest'
+        "400":
+          description: "<ul><li>L'iid deve essere un valore numerico.</li><li>L'iid deve essere un intero maggiore di 0.</li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "Nessun utente con interesse {iid}. è stato trovato."       
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+  /chats:
+    post:
+      tags:
+      - "chats"
+      description: >-
+        Crea una nuova chat.
+      summary: Crea Chat.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Chat'
+      responses:
+        '201':
+          description: "Chat creata correttamente."
+          headers:
+            'Location':
+              schema:
+                type: string
+              description: "Collegamento alla chat appena creata"
+        '400':
+          description: '<ul><li> Il campo {idUserSend} deve essere un numero.</li><li>Il campo {idUserSend} deve essere un numero maggiore di 0.</li><li>Il campo {idUserRecv} deve essere un numero.</li><li>Il campo {idUserRecv} deve essere un numero maggiore di 0.</li>'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        '403':
+          description: '<ul><li> Il campo {idUserSend} non deve essere uguale a {idUserRecv}.</li><li>L&#39;utente con id {idUserSend} non è registrato.</li><li>L&#39;utente con id {idUserRecv} non è registrato.</li>'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        '409':
+          description: "Questa chat è già esistente."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        '500':
+          description: "Errore del server."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+    get:
+      tags:
+      - "chats"
+      description: >-
+        Mostra la chat tra 2 utenti.
+      summary: Mostra chat tra 2 utenti.
+      parameters:
+      - name: "idUserSend"
+        in: "query"
+        description: "id utente 1 (sender) della chat"
+        required: false
+        schema:
+          type: "integer"
+      - name: "idUserRecv"
+        in: "query"
+        description: "id utente 2 (receiver) della chat"
+        required: false
+        schema:
+          type: "integer"
+      responses:
+        '200':
+          description: "Chat tra 2 utenti mostrata correttamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        "400":
+          description: '<ul><li>Il parametro {idUserSend} deve essere un numero</li><li>Il parametro {idUserSend} deve essere maggiore di 0</li><li>Il parametro {idUserRecv} deve essere un numero</li><li>Il parametro {idUserRecv} deve essere maggiore di 0</li></ul>'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "403":
+          description: "<ul><li>Utente sender non esiste</li><li>Utente receiver non esiste</li>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "La chat tra utente con {idUserSend} e utente con {idUserRecv} non esiste"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+  /chats/{idUserSend}/{idChat}:
+    get:
+      tags:
+      - "chats"
+      summary: "Prende la chat con {idChat} dello user con id {idUserSend}."
+      description: "Ritorna la chat con {idChat} relativo all'utente {idUserSend}."
+      parameters:
+      - name: "idUserSend"
+        in: "path"
+        description: "id dell'utente da cui viene richiesta."
+        required: true
+        schema:
+          type: "integer"
+      - name: "idChat"
+        in: "path"
+        description: "id della chat che viene richiesta."
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "La chat con {idChat} relativa all'utente {idUserSend} è stata trovata e restituita."
+          content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/Chat'
+        "400":
+          description: "<ul><li>Il campo {idUserSend} deve essere un numero.</li><li>Il campo {idUserSend} deve essere un numero maggiore di 0.</li><li>Il campo {idChat} deve essere un numero.</li><li>Il campo {idChat} deve essere un numero maggiore di 0.</li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "403":
+          description: "L'utente con id {idUserSend} non esiste."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "La chat con id uguale a {idChat} non esiste."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+    put:
+      tags:
+      - "chats"
+      description: >-
+        Aggiorna la chat con id = IdChat e con mittente l'utente con id = idUserSend, aggiungendo un nuovo messaggio.
+      summary: Permette di inserire un nuovo messaggio in una chat .
+      parameters:
+      - name: "idUserSend"
+        in: "path"
+        description: "ID dell'utente mittente della chat."
+        required: true
+        schema:
+          type: integer
+      - name: "idChat"
+        in: "path"
+        description: "ID della chat."
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqBodyPutChat'
+        required: false
+      responses:
+        "200":
+          description: "Chat aggiornata correttamente."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        "400":
+          description: "<ul><li>Il parametro {idUserSend} deve essere un numero intero.</li><li>Il parametro {idUserSend} deve essere un valore superiore a 0.</li><li>Il parametro {idChat} deve essere un numero intero.</li><li>Il parametro {idChat} deve essere un valore superiore a 0.</li><li>Il campo {message} deve contenere qualcosa.</li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "403":
+          description: "Utente non trovato."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "Chat non trovata."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'     
+    delete:
+      tags:
+      - "chats"
+      summary: "Elimina chat."
+      description: "Elimina la chat con un dato id."
+      parameters:
+      - name: "idUserSend"
+        in: "path"
+        description: "id dell'utente che ha fatto la richiesta."
+        required: true
+        schema:
+          type: "integer"
+      - name: "idChat"
+        in: "path"
+        description: "id della chat da eliminare appartenente all'utente identificato con idUserSend."
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "La chat identificata da idUserSend e idChat è stata cancellata correttamente."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationOk'
+        "400":
+          description: '<ul><li> Il campo {idUserSend} deve essere un numero.</li><li>Il campo {idUserSend} deve essere un numero maggiore di 0.</li><li>Il campo {idChat} deve essere un numero.</li><li>Il campo {idChat} deve essere un numero maggiore di 0.</li>'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "403":
+          description: "L'utente non esiste."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo' 
+  /chats/{idUserSend}:
+    get:
+      tags:
+      - "chats"
+      description: >-
+        Ritorna tutti gli oggetti chat legati all'utente con id = idUserSend.
+      summary: Recupera tutte le chat legate ad un utente.
+      parameters:
+      - name: "idUserSend"
+        in: "path"
+        description: "ID dell'utente (mittente) di cui recuperare le chat."
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        '200':
+          description: "Chat recuperate correttamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllChats'
+        "400":
+          description: "<ul><li>Il parametro {idUserSend} deve essere un numero intero.</li><li>Il parametro {idUserSend} deve avere un valore superiore a 0.</li><ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "403":
+          description: "L'utente non esiste."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'                
+  /chats/{idUserSend}/{idChat}/newMessages:
+    put:
+      tags:
+      - "chats"
+      description: "Segna come letti i nuovi messaggi e li sposta in messaggi letti"
+      summary: "API per dichiarare di aver letto i messaggi"
+      parameters:
+      - name: "idUserSend"
+        in: "path"
+        description: "id dell'utente da cui viene richiesta."
+        required: true
+        schema:
+          type: "integer"
+      - name: "idChat"
+        in: "path"
+        description: "id della chat che viene richiesta."
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "Messaggi della chat letti correttamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        "400":
+          description: "<ul><li>Il parametro {idUserSend} deve essere un numero intero.</li><li>Il parametro {idUserSend} deve avere un valore superiore a 0.</li><li>Il parametro {idChat} deve essere un numero intero.</li><li>Il parametro {idChat} deve avere un valore superiore a 0.</li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "403":
+          description: "L'utente non esiste."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+        "404":
+          description: "La chat non esiste"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationKo'
+components:
+  schemas:
+    User:
+        type: object
+        properties:
+          self:
+            type: string
+            description: "Location risorsa"
+          u_name:
+            type: string
+            description: "Nome dell'utente."
+          surname:
+            type: string
+            description: "Cognome dell'utente."
+          nickname:
+            type: string
+            description: "Nickname dell'utente."
+          email:
+            type: string
+            description: "Email dell'utente."
+          birthday:
+            type: string
+            description: "Data di nascita dell'utente."
+          age:
+            type: integer
+            description: "Età dell'utente."
+          sex:
+            type: string
+            description: "Sesso dell'utente."
+          sex_orientation:
+            type: string
+            description: "Orientamento sessuale dell'utente."
+          bio:
+            type: string
+            description: "Breve biografia dell'utente."
+          interests:
+            type: array
+            items:
+              type: integer
+            description: "Lista di interessi dell'utente."
+          wantsRelation:
+            type: boolean
+            description: "Volontà di cercare una relazione"
+          confirmedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match confermati"
+          refusedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match rifiutati"
+          sentMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match inviati"
+          receivedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match ricevuti"
+    Interest:
+      type: object
+      properties:
+        self:
+          type: string
+          description: "Location interesse."
+        name:
+          type: string
+          description: "Nome dell'interesse."
+        description:
+          type: 'string'
+          description: "Breve descrizione dell'interesse."
+    InterestPost:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Nome dell'interesse."
+        description:
+          type: 'string'
+          description: "Breve descrizione dell'interesse."
+    AllUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    AllUsersWithInterest:
+      type: array
+      items:
+        type: integer
+    OperationOk:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "Breve descrizione sull'esito dell'operazione"
+    OperationKo:
+      type: object
+      properties:
+        error:
+          type: string
+          description: "Breve descrizione sull'esito dell'operazione"
+    AllInterests:
+      type: array
+      items:
+        $ref: '#/components/schemas/Interest'
+    ReqBodyPut:
+        type: object
+        properties:
+          u_name:
+            type: string
+            description: "Nome dell'utente."
+          surname:
+            type: string
+            description: "Cognome dell'utente."
+          nickname:
+            type: string
+            description: "Nickname dell'utente."
+          password:
+            type: string
+            description: "Password per accedere all'account."
+          birthday:
+            type: string
+            description: "Data di nascita dell'utente."
+          sex:
+            type: string
+            description: "Sesso dell'utente."
+          sex_orientation:
+            type: string
+            description: "Orientamento sessuale dell'utente."
+          bio:
+            type: string
+            description: "Breve biografia dell'utente."
+          interest:
+            type: array
+            items:
+              type: integer
+            description: "Lista di interessi dell'utente."
+          profile_photo:
+            type: string
+            description: "Percorso della foto profilo dell'utente."
+          wantsRelation:
+            type: boolean
+            description: "Volontà di cercare una relazione"
+          confirmedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match confermati"
+          refusedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match rifiutati"
+          sentMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match inviati"
+          receivedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match ricevuti"
+          flagDelete:
+            type: boolean
+            description: "Flag per gestione array dei match"
+          flagRefused:
+            type: boolean
+            description: "Flag per gestione array dei match "
+          flagConfirmed:
+            type: boolean
+            description: "Flag per gestione array dei match "
+    UserPut:
+        type: object
+        properties:
+          u_name:
+            type: string
+            description: "Nome dell'utente."
+          surname:
+            type: string
+            description: "Cognome dell'utente."
+          nickname:
+            type: string
+            description: "Nickname dell'utente."
+          password:
+            type: string
+            description: "Password per accedere all'account."
+          birthday:
+            type: string
+            description: "Data di nascita dell'utente."
+          age:
+            type: integer
+            description: "Età dell'utente."
+          sex:
+            type: string
+            description: "Sesso dell'utente."
+          sex_orientation:
+            type: string
+            description: "Orientamento sessuale dell'utente."
+          bio:
+            type: string
+            description: "Breve biografia dell'utente."
+          interest:
+            type: array
+            items:
+              type: integer
+            description: "Lista di interessi dell'utente."
+          profile_photo:
+            type: string
+            description: "Percorso della foto profilo dell'utente."
+          wantsRelation:
+            type: boolean
+            description: "Volontà di cercare una relazione"
+          confirmedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match confermati"
+          refusedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match rifiutati"
+          sentMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match inviati"
+          receivedMatches:
+            type: array
+            items:
+              type: integer
+            description: "Lista dei match ricevuti"
+    InterestToSend:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Nome dell'interesse."
+        description:
+          type: 'string'
+          description: "Breve descrizione dell'interesse."
+    Chat:
+      type: object
+      properties:
+        idUserSend:
+          type: integer
+          description: "Id utente che fa la richiesta"
+        idUserRecv:
+          type: integer
+          description: "Id utente che accetta la richiesta"
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              sendOrRecv:
+                type: integer
+                description: "Mittente del messaggio."
+              message:
+                type: string
+                description: "Testo del messaggio."
+              time:
+                type: string
+                description: "Ora di invio del messaggio."
+        newMessages:
+          type: array
+          items:
+            type: object
+            properties:
+              sendOrRecv:
+                type: integer
+                description: "Mittente del messaggio."
+              message:
+                type: string
+                description: "Testo del messaggio."
+              time:
+                type: string
+                description: "Ora di invio del messaggio."
+    ReqBodyPutChat:
+      type: object
+      properties:
+        msg:
+          type: string
+          description: "Messaggio da inviare in chat"
+        time:
+          type: string
+          description: "Ora di invio del messaggio"
+    AllChats:
+      type: array
+      items:
+        $ref: '#/components/schemas/Chat'

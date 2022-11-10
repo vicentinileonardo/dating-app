@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Light-a-Match</title>
+        <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+        <!-- Se includo bootstrap non va piu la form -->
+
+        <link rel="icon" href="../images/icon.png"/>
+		<link href="../css/style.css" rel="stylesheet" type="text/css">
+		<link href="../css/style_contactUs.css" rel="stylesheet" type="text/css">
+        <!-- Icons font CSS-->
+        <link href="../../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+        <link href="../../vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+        <!-- Font special for pages-->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+
+        <!-- Vendor CSS-->
+        <link href="../../vendor/select2/select2.min.css" rel="stylesheet" media="all">
+        <link href="../../vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+        <link href="../css/main.css" rel="stylesheet" media="all">
+
+        <script src="../../vendor/jquery/jquery.min.js"></script>
+        <!-- Vendor JS-->
+        <script src="../../vendor/select2/select2.min.js"></script>
+        <script src="../../vendor/datepicker/moment.min.js"></script>
+		<script src="../../vendor/datepicker/daterangepicker.js"></script>
+		
+		<script>
+            function collapse() {
+                var x = document.getElementById("myNavbar");
+                if (x.className === "navbar") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "navbar";
+                }
+            }
+        </script>
+
+    </head>
+    <body>
+	
+        <div class="navbar" id="myNavbar">
+            <div>
+                <a href="homepage"> HomePage </a>
+                <a href="login"> Login </a>
+                <a href="register"> Registrati </a>
+                <a href="contacts">Contattaci</a>
+                <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="collapse()">&#9776;</a>
+            </div>
+        </div>
+            
+        <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+            <div class="wrapper wrapper--w790">
+                <div class="card card-5">
+                    <div class="card-heading">
+                        <h2 class="title"> <i> I nostri contatti </i></h2>
+                    </div>
+                    <div class="card-body">
+						<center> 
+							<p class="myParagraph"> Se hai riscontrato dei problemi con il nostro sito non esitare a 
+								contattarci. Ti lasciamo qui sotto i nostri recapiti e-mail: </p>
+							<br/>
+							<ul class="myUnorderedList">
+								<li> Simone Cantini: simone.cantini@studenti.unitn.it</li>
+								<li> Luca Giacominelli: luca.giacominelli@studenti.unitn.it</li>
+								<li> Sofia Mari: sofia.mari@studenti.unitn.it</li>
+								<li> Luca Vian: luca.vian@studenti.unitn.it </li>
+								<li> Leonardo Vicentini: leonardo.vicentini@studenti.unitn.it</li>
+							</ul>
+						</center>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		<div id="footer" class="footer">
+			<p id="text_footer" class="text_footer"> &copy; A.A. 2020-2021 Progetto Ingegneria del Software II - Group#20 </p>
+        </div>
+    </body>
+</html>

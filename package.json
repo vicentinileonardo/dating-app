@@ -1,0 +1,38 @@
+{
+  "name": "light-a-match_id-20",
+  "version": "1.0.0",
+  "description": "| Name | User story | How to Demo | Importance | Estimate |\r |-|-|-|-|-|\r | Creazione profilo | Come utente, vorrei poter creare il mio profilo aggiungendo i dati relativi alla mia persona e ai miei interessi, per incuriosire altri utenti. | Clicco su registrazione, inserisco in un form i miei dati personali (nome, cognome, ecc.), email e password. Clicco su \"Inserisci foto profilo\" e mi viene data la possibilità di caricare una foto dall'archivio del mio device. Successivamente, posso scegliere tra una lista predefinita di \"interessi\". | 1 | 4 |\r | Aggiornamento profilo | Come utente, vorrei aver la possibilità di cambiare gli interessi forniti e modificare il mio profilo (foto, bio, posizione), in modo da avere un profilo sempre aggiornato. | Nella sezione impostazioni posso visualizzare le informazioni inserite personali inserite nella fase di registrazione ed eventualmente modificarle. | 4 | 2 |\r | Gestione match 1 | Come utente in cerca unicamente di amicizie, vorrei non ricevere suggerimenti con persone in cerca di una relazione, perchè non sono interessato a conoscere quel tipo di utente. | Devo dichiarare se sono alla ricerca di relazioni o di amicizie nella fase di registrazione ed eventualmente modificare la scelta successivamente nelle impostazioni, da questo momento i match verranno creati automaticamente in base alle preferenze impostate. | 2 | 2 |\r | Gestione match 2| Da utente in cerca di una relazione, vorrei che i match suggeriti prendano in considerazione il mio orientamento, perchè non sono interessato a conoscere a certi tipi di utente. | Devo impostare il mio orientamento nella fase di registrazione ed eventualmente modificarlo successivamente nelle impostazioni, da questo momento i match verranno creati automaticamente in base alle preferenze impostate. | 2 | 2 |\r | Chat tra 2 utenti | Come utente, vorrei iniziare una conversazione via chat con un altro utente a me associato, per iniziare una conoscenza. | Quando ho eseguito un match con una persona che mi interessa, cliccando sul bottone \"Invia messaggio\" mi si dovrebbe aprire una finestra in cui posso inviare e ricevere messaggi dalla persona con la quale ho eseguito il match. | 3 | 10 |",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest",
+    "start_local": "node -r dotenv/config index.js"
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simoneca95/Light-a-Match_ID-20.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simoneca95/Light-a-Match_ID-20/issues"
+  },
+  "homepage": "https://github.com/simoneca95/Light-a-Match_ID-20#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.14",
+    "mongoose-sequence": "^5.3.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "supertest": "^6.0.1"
+  }
+}
